@@ -7,15 +7,15 @@
 #define GETBIT(var, bit)	(((var) >> (bit)) & 1)
 
 // Circuit inputs, AD2 outputs (number corresponds to DIO pin):
-const int S1 = 12;
-const int S0 = 11;
+const int S1 = 14;
+const int S0 = 13;
 const int X2 = 10;
 const int X1 = 9;
 const int X0 = 8;
 
 // Circuit outputs, AD2 inputs (number corresponds to DIO pin):
-const int NextS1 = 4;
-const int NextS0 = 3;
+const int NextS1 = 6;
+const int NextS0 = 5;
 const int Dispense = 2;
 const int Change1 = 1;
 const int Change0 = 0;
@@ -41,7 +41,7 @@ void test(HDWF hdwf, char state, char in, char expected_state, char expected_out
     FDwfDigitalIOOutputSet(hdwf, outputMask);
 
     // Wait for circuit gates to change (each gate should change in ~17ns so this may not be necessary)
-    Sleep(10);
+    Sleep(100);
 
     // Read circuit output (AD2 input)
     FDwfDigitalIOStatus(hdwf);
@@ -124,13 +124,13 @@ int main()
     test(hdwf, 0b00, 0b010, 0b00, 0b000);
     test(hdwf, 0b01, 0b010, 0b01, 0b000);
     test(hdwf, 0b10, 0b010, 0b00, 0b100);
-    test(hdwf, 0b11, 0b010, 0b01, 0b100);
+    test(hdwf, 0b11, 0b010, 0b00, 0b101);
     printf("\n");
 
     test(hdwf, 0b00, 0b011, 0b00, 0b000);
     test(hdwf, 0b01, 0b011, 0b01, 0b000);
     test(hdwf, 0b10, 0b011, 0b00, 0b100);
-    test(hdwf, 0b11, 0b011, 0b01, 0b100);
+    test(hdwf, 0b11, 0b011, 0b00, 0b101);
     printf("\n");
 
     test(hdwf, 0b00, 0b100, 0b00, 0b000);
